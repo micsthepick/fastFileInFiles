@@ -121,16 +121,27 @@ void showFindInFilesDialog() {
     ::DialogBox((HINSTANCE)g_hModule, MAKEINTRESOURCE(IDD_FINDINFILESFAST_DIALOG), nppData._nppHandle, FindInFilesDlgProc);
 }
 
+#include <windows.h>
+#include <string>
+
 std::string ConvertTCHARToString(const TCHAR* tcharString) {
     std::string convertedString;
 #ifdef UNICODE
-    std::wstring wString(tcharString);
-    convertedString.assign(wString.begin(), wString.end());
+    // Calculate the required buffer size
+    int bufferSize = WideCharToMultiByte(CP_UTF8, 0, tcharString, -1, nullptr, 0, nullptr, nullptr);
+    if (bufferSize > 0) {
+        std::vector<char> buffer(bufferSize);
+        // Perform the conversion
+        WideCharToMultiByte(CP_UTF8, 0, tcharString, -1, &buffer[0], bufferSize, nullptr, nullptr);
+        // Assign to string (excluding null terminator)
+        convertedString.assign(buffer.begin(), buffer.end() - 1);
+    }
 #else
     convertedString = tcharString;
 #endif
     return convertedString;
 }
+
 
 
 INT_PTR CALLBACK FindInFilesDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM) {
