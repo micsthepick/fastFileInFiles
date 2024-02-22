@@ -7,7 +7,7 @@
             ],
             "defines": ["_DEBUG", "UNICODE", "_UNICODE"],
             "cStandard": "c17",
-            "compilerPath": "/usr/bin/x86_64-w64-mingw32-gcc",
+            "compilerPath": "/opt/llvm-mingw-20231128-ucrt-ubuntu-20.04-x86_64/bin/x86_64-w64-mingw32-gcc",
             "intelliSenseMode": "windows-gcc-x64",
             "cppStandard": "c++17"
         }

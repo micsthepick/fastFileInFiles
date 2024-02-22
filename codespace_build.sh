@@ -43,4 +43,7 @@ build_arch x86_32
 # Build for x64 (64-bit)
 build_arch x86_64
 
+# Build for ARM64 (arm 64-bit)
+build_arch aarch64
+
 echo "All builds completed."
