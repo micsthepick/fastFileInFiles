@@ -1,5 +1,5 @@
-//this file is part of notepad++
-//Copyright (C)2022 Don HO <don.h@free.fr>
+//this file is part of the FastFindInFiles plugin for notepad++
+//Copyright (C) 2024 Michael Pannekoek
 //
 //This program is free software; you can redistribute it and/or
 //modify it under the terms of the GNU General Public License
@@ -17,6 +17,7 @@
 
 #include "PluginDefinition.h"
 #include "menuCmdID.h"
+#include "fff.h"
 
 //
 // The plugin data that Notepad++ needs
@@ -28,12 +29,15 @@ FuncItem funcItem[nbFunc];
 //
 NppData nppData;
 
-//
+HANDLE g_hModule = NULL; // Global variable to store the module handle
+
 // Initialize your plugin data here
-// It will be called while plugin loading   
-void pluginInit(HANDLE /*hModule*/)
+// It will be called while plugin loading
+void pluginInit(HANDLE hModule)
 {
+    g_hModule = hModule; // Store the module handle
 }
+
 
 //
 // Here you can do the clean up, save the parameters (if any) for the next session
@@ -58,8 +62,8 @@ void commandMenuInit()
     //            ShortcutKey *shortcut,          // optional. Define a shortcut to trigger this command
     //            bool check0nInit                // optional. Make this menu item be checked visually
     //            );
-    setCommand(0, TEXT("Hello Notepad++"), hello, NULL, false);
-    setCommand(1, TEXT("Hello (with dialog)"), helloDlg, NULL, false);
+    setCommand(0, TEXT("Find In Files (fast)"), showFindInFilesDialog, NULL, false);
+    setCommand(1, TEXT("About"), helloDlg, NULL, false);
 }
 
 //
@@ -93,24 +97,69 @@ bool setCommand(size_t index, TCHAR *cmdName, PFUNCPLUGINCMD pFunc, ShortcutKey 
 //----------------------------------------------//
 //-- STEP 4. DEFINE YOUR ASSOCIATED FUNCTIONS --//
 //----------------------------------------------//
-void hello()
-{
-    // Open a new document
-    ::SendMessage(nppData._nppHandle, NPPM_MENUCOMMAND, 0, IDM_FILE_NEW);
-
-    // Get the current scintilla
-    int which = -1;
-    ::SendMessage(nppData._nppHandle, NPPM_GETCURRENTSCINTILLA, 0, (LPARAM)&which);
-    if (which == -1)
-        return;
-    HWND curScintilla = (which == 0)?nppData._scintillaMainHandle:nppData._scintillaSecondHandle;
-
-    // Say hello now :
-    // Scintilla control has no Unicode mode, so we use (char *) here
-    ::SendMessage(curScintilla, SCI_SETTEXT, 0, (LPARAM)"Hello, Notepad++!");
-}
-
 void helloDlg()
 {
-    ::MessageBox(NULL, TEXT("Hello, Notepad++!"), TEXT("Notepad++ Plugin Template"), MB_OK);
+    ::MessageBox(NULL, TEXT("Hello, Notepad++!"), TEXT("FindInFilesFast finds strings fast."), MB_OK);
+}
+
+
+void showFindInFilesDialog() {
+    if (g_hModule == NULL) {
+        // Handle the error, g_hModule is not initialized
+        MessageBox(NULL, TEXT("Plugin module handle is null."), TEXT("Error"), MB_OK | MB_ICONERROR);
+        return;
+    }
+
+    if (nppData._nppHandle == NULL) {
+        // Handle the error, nppData._nppHandle is not initialized
+        MessageBox(NULL, TEXT("Notepad++ main window handle is null."), TEXT("Error"), MB_OK | MB_ICONERROR);
+        return;
+    }
+
+    DialogBox((HINSTANCE)g_hModule, MAKEINTRESOURCE(IDD_FINDINFILESFAST_DIALOG), nppData._nppHandle, FindInFilesDlgProc);
+}
+
+
+
+INT_PTR CALLBACK FindInFilesDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
+    switch (message) {
+        case WM_INITDIALOG:
+            return (INT_PTR)TRUE;
+
+        case WM_COMMAND:
+            if (LOWORD(wParam) == IDOK) {
+                TCHAR path[MAX_PATH];
+                TCHAR searchString[MAX_PATH];
+                TCHAR filters[MAX_PATH];
+
+                GetDlgItemText(hDlg, IDC_PATH_EDIT, path, MAX_PATH);
+                GetDlgItemText(hDlg, IDC_SEARCHSTRING_EDIT, searchString, MAX_PATH);
+                GetDlgItemText(hDlg, IDC_FILTERS_EDIT, filters, MAX_PATH);
+
+                // Convert from TCHAR to std::string (if necessary)
+                std::string pathStr, searchStringStr, filtersStr;
+                #ifdef UNICODE
+                std::wstring wPath(path), wSearchString(searchString), wFilters(filters);
+                pathStr.assign(wPath.begin(), wPath.end());
+                searchStringStr.assign(wSearchString.begin(), wSearchString.end());
+                filtersStr.assign(wFilters.begin(), wFilters.end());
+                #else
+                pathStr = path;
+                searchStringStr = searchString;
+                filtersStr = filters;
+                #endif
+
+                EndDialog(hDlg, IDOK);
+
+                // Call your search function here
+                findInFilesFast(pathStr, searchStringStr, filtersStr);
+                return (INT_PTR)TRUE;
+            }
+            else if (LOWORD(wParam) == IDCANCEL) {
+                EndDialog(hDlg, IDCANCEL);
+                return (INT_PTR)TRUE;
+            }
+            break;
+    }
+    return (INT_PTR)FALSE;
 }

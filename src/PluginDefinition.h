@@ -1,5 +1,5 @@
-//this file is part of notepad++
-//Copyright (C)2022 Don HO <don.h@free.fr>
+//this file is part of the FastFindInFiles plugin for notepad++
+//Copyright (C) 2024 Michael Pannekoek
 //
 //This program is free software; you can redistribute it and/or
 //modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
 //-------------------------------------//
 // Here define your plugin name
 //
-const TCHAR NPP_PLUGIN_NAME[] = TEXT("Notepad++ plugin template");
+const TCHAR NPP_PLUGIN_NAME[] = TEXT("fastFindInFiles");
 
 //-----------------------------------------------//
 //-- STEP 2. DEFINE YOUR PLUGIN COMMAND NUMBER --//
@@ -70,7 +70,7 @@ bool setCommand(size_t index, TCHAR *cmdName, PFUNCPLUGINCMD pFunc, ShortcutKey 
 //
 // Your plugin command functions
 //
-void hello();
+void findInFilesFast();
 void helloDlg();
 
 #endif //PLUGINDEFINITION_H
