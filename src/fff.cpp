@@ -29,6 +29,11 @@ void findInFilesFast(const std::string& path, const std::string& searchString, c
         if (!file) continue;
 
         std::streamsize size = file.tellg();
+
+        const std::streamsize size200MB = 256 * 1024 * 1024; // 256MB in bytes
+
+        if (size >= size200MB) continue;
+
         file.seekg(0, std::ios::beg);
 
         std::string content(size, '\0');
