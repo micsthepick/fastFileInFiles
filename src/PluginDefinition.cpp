@@ -133,7 +133,7 @@ std::string ConvertTCHARToString(const TCHAR* tcharString) {
 }
 
 
-INT_PTR CALLBACK FindInFilesDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
+INT_PTR CALLBACK FindInFilesDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM) {
     switch (message) {
         case WM_INITDIALOG:
             return (INT_PTR)TRUE;
