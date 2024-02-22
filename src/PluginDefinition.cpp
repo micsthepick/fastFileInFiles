@@ -118,9 +118,19 @@ void showFindInFilesDialog() {
         return;
     }
 
-    DialogBox((HINSTANCE)g_hModule, MAKEINTRESOURCE(IDD_FINDINFILESFAST_DIALOG), nppData._nppHandle, FindInFilesDlgProc);
+    ::DialogBox((HINSTANCE)g_hModule, MAKEINTRESOURCE(IDD_FINDINFILESFAST_DIALOG), nppData._nppHandle, FindInFilesDlgProc);
 }
 
+std::string ConvertTCHARToString(const TCHAR* tcharString) {
+    std::string convertedString;
+#ifdef UNICODE
+    std::wstring wString(tcharString);
+    convertedString.assign(wString.begin(), wString.end());
+#else
+    convertedString = tcharString;
+#endif
+    return convertedString;
+}
 
 
 INT_PTR CALLBACK FindInFilesDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
@@ -142,9 +152,9 @@ INT_PTR CALLBACK FindInFilesDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPAR
                 std::string pathStr, searchStringStr, filtersStr;
                 #ifdef UNICODE
                 std::wstring wPath(path), wSearchString(searchString), wFilters(filters);
-                pathStr.assign(wPath.begin(), wPath.end());
-                searchStringStr.assign(wSearchString.begin(), wSearchString.end());
-                filtersStr.assign(wFilters.begin(), wFilters.end());
+                pathStr = ConvertTCHARToString(path);
+                searchStringStr = ConvertTCHARToString(searchString);
+                filtersStr = ConvertTCHARToString(filters);
                 #else
                 pathStr = path;
                 searchStringStr = searchString;
