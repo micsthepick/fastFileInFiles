@@ -1,6 +1,5 @@
 {
     "recommendations": [
-        "jbenden.c-cpp-flylint",
         "ms-vscode.cpptools-extension-pack"
     ]
 }

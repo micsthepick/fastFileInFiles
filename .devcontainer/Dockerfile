@@ -1,5 +1,5 @@
 # Use an official devcontainer base image
-FROM devcontainers/cpp:latest
+FROM mcr.microsoft.com/vscode/devcontainers/cpp:latest
 
 # Install MinGW, make, and cppcheck
 RUN apt-get update && apt-get install -y \
