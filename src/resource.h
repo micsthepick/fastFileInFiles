@@ -1,3 +1,6 @@
+#ifndef IDC_STATIC
+#define IDC_STATIC (-1)
+#endif
 #define IDC_PATH_EDIT 101
 #define IDC_SEARCHSTRING_EDIT 102
 #define IDC_FILTERS_EDIT 103
