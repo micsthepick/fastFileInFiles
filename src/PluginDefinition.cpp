@@ -108,13 +108,13 @@ void helloDlg()
 void showFindInFilesDialog() {
     if (g_hModule == NULL) {
         // Handle the error, g_hModule is not initialized
-        MessageBox(NULL, TEXT("Plugin module handle is null."), TEXT("Error"), MB_OK | MB_ICONERROR);
+        ::MessageBox(NULL, TEXT("Plugin module handle is null."), TEXT("Error"), MB_OK | MB_ICONERROR);
         return;
     }
 
     if (nppData._nppHandle == NULL) {
         // Handle the error, nppData._nppHandle is not initialized
-        MessageBox(NULL, TEXT("Notepad++ main window handle is null."), TEXT("Error"), MB_OK | MB_ICONERROR);
+        ::MessageBox(NULL, TEXT("Notepad++ main window handle is null."), TEXT("Error"), MB_OK | MB_ICONERROR);
         return;
     }
 
