@@ -4,8 +4,9 @@ project(FastFindInFiles)
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 17)
 
-# Specify the MinGW toolchain file
-set(CMAKE_TOOLCHAIN_FILE "/usr/share/mingw-w64/toolchain.cmake")
+# Set compiler options for MinGW
+set(CMAKE_CXX_COMPILER x86_64-w64-mingw32-g++)
+set(CMAKE_C_COMPILER x86_64-w64-mingw32-gcc)
 
 # Add all your source files
 set(SOURCES 
@@ -36,6 +37,9 @@ set(HEADERS
 
 # Create a shared library (DLL) from your sources
 add_library(FastFindInFiles SHARED ${SOURCES} ${HEADERS})
+
+target_link_libraries(FastFindInFiles PRIVATE shlwapi)
+
 
 target_compile_definitions(FastFindInFiles PRIVATE UNICODE _UNICODE WIN32 _DEBUG _WINDOWS _USRDLL NPPPLUGINTEMPLATE_EXPORTS _CRT_NONSTDC_NO_DEPRECATE _CRT_SECURE_NO_WARNINGS _CRT_NON_CONFORMING_SWPRINTFS=1)
 
