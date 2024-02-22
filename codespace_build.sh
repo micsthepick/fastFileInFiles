@@ -25,7 +25,7 @@ build_arch() {
 
   # Configure CMake for the specific architecture
   echo "Configuring CMake for ${ARCH}..."
-  cmake .. -DTARGET_ARCH="${ARCH}"
+  cmake .. -DCMAKE_TOOLCHAIN_FILE=../toolchain-mingw.cmake -DTARGET_ARCH="${ARCH}"
 
   # Build the project
   echo "Building..."
@@ -38,9 +38,9 @@ build_arch() {
 }
 
 # Build for x86 (32-bit)
-build_arch x86
+build_arch x86_32
 
 # Build for x64 (64-bit)
-build_arch x64
+build_arch x86_64
 
 echo "All builds completed."
