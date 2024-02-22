@@ -1,0 +1,21 @@
+{
+    "name": "C++ Development",
+    "build": {
+      "dockerfile": "Dockerfile"
+    },
+    "customizations": {
+      "vscode": {
+        "settings": {
+          "terminal.integrated.shell.linux": "/bin/bash"
+        },
+        "extensions": [
+          "ms-vscode.cpptools",
+          "ms-vscode.cmake-tools"
+        ]
+      }
+    },
+    "forwardPorts": [],
+    "postCreateCommand": "echo 'Container ready!'",
+    "remoteUser": "vscode"
+  }
+  
