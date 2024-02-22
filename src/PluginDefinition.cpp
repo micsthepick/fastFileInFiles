@@ -19,6 +19,8 @@
 #include "menuCmdID.h"
 #include "fff.h"
 
+#include "resource.h"
+
 //
 // The plugin data that Notepad++ needs
 //
