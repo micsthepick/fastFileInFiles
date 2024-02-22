@@ -72,5 +72,7 @@ bool setCommand(size_t index, TCHAR *cmdName, PFUNCPLUGINCMD pFunc, ShortcutKey 
 //
 void findInFilesFast();
 void helloDlg();
+void showFindInFilesDialog();
+INT_PTR CALLBACK FindInFilesDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 
 #endif //PLUGINDEFINITION_H
