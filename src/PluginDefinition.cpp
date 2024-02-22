@@ -19,7 +19,7 @@
 #include "menuCmdID.h"
 #include "fff.h"
 
-#include "resource.h"
+#include "DockingFeature/resource.h"
 
 //
 // The plugin data that Notepad++ needs
