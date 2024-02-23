@@ -38,7 +38,7 @@ void findInFilesFast(const std::string& path, const std::string& searchString, c
 
         file.seekg(0, std::ios::beg);
 
-        std::string content(size, '\0');
+        std::string content(static_cast<size_t>(size), '\0');
         if (file.read(&content[0], size)) {
             auto positions = searchContent(content, searchString);
             for (auto pos : positions) {
